@@ -439,8 +439,15 @@ function setpostview($postID){
 
 
 
+// create Apiggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
 
 
+
+// Get all projects and assign thumbnail
+ 
+
+
+// dddddddddddddđ
 
 // Nhungws file style.css
 
@@ -468,3 +475,42 @@ wp_enqueue_script('slide-script');
 
 }
 add_action('wp_enqueue_scripts', 'congbio_styles');
+
+
+ 
+	add_action( 'rest_api_init', function() {
+    register_rest_route( 'api/v1', '/posts', [
+      'methods' => 'GET',
+      'callback' => 'get_projects',
+   
+    ] );
+  } );
+  
+  // Get all projects and assign thumbnail
+  function get_projects( $params ) {
+    // $projects =  get_posts( [
+    //   'post_type' => 'post',
+    //   'posts_per_page' => 10
+    // ] );
+  
+    // foreach( $projects as &$p ) {
+    //   $p->thumbnail = get_the_post_thumbnail_url( $p->ID );
+    // }
+  $post = new WP_Query(array(
+    'post_type'=>'post',
+
+  ));
+  $postResult = array();
+
+  while($post -> have_posts()){
+    $post ->the_post();
+    array_push($postResult,array(
+      'id'=>get_the_ID(),
+      'title'=>get_the_title(),
+      'link'=>get_the_permalink()
+
+    ));
+  }
+    return $postResult;
+  }
+	
